@@ -1,3 +1,4 @@
 vendor/*
 cookie.txt
 .DS_STORE
+composer.lock

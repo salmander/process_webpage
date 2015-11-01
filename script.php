@@ -16,6 +16,7 @@ $dom->loadFromUrl(URL, [], new \Curl);
 // In order to find all the urls to the product pages, we need to
 // find all the divs with the .product class
 $products = $dom->find('#productsContainer .product');
+
 echo "Total products: " . count($products) . PHP_EOL;
 $product_response = new ProductResponse();
 
@@ -62,7 +63,7 @@ foreach ($products as $p) {
                 ->nextSibling() // div with the "description"
                 ->innerHtml();
         }
-    } else { // For some products description is in .longTextItems
+    } else { // For some products, description is in .longTextItems
         $div_description = $pp_dom->find('.itemTypeGroupContainer .longTextItems');
         if (count($div_description) > 0) {
             $product->description = $div_description->innerHtml();
