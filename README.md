@@ -7,7 +7,7 @@ Sainsbury’s grocery site "Ripe Fruits" page and returns a JSON array of all th
 Requirements
 ------------
 
-* PHP 5.4
+* PHP >= 5.4
 * composer
 * It requires `paquettg/php-html-parser` package
 
