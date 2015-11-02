@@ -38,9 +38,7 @@ class ProductResponse {
     {
         $total = 0.00;
         foreach ($this->products as $p) {
-            // Remove £ from unit_price
-            $unit_price = str_replace('£', '', $p->unit_price);
-            $total += (float)$unit_price;
+            $total += (float)$p->getUnitPrice();
         }
 
         return round($total, 2);

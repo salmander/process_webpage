@@ -13,65 +13,33 @@ $dom = new Dom;
 // Load and parse Sainsbury's Ripe Fruits webpage
 $dom->loadFromUrl(URL, [], new \Curl);
 
-// In order to find all the urls to the product pages, we need to
-// find all the divs with the .product class
-$products = $dom->find('#productsContainer .product');
+// Instantiate ProductListPage
+$product_list = new ProductListPage($dom);
 
-echo "Total products: " . count($products) . PHP_EOL;
+// Get all products
+$products = $product_list->getProducts();
+
+echo 'Total products on Product List page: ' . count($products) . PHP_EOL;
+
+// Product Response will contains all the products in the expected format
+// with total price
 $product_response = new ProductResponse();
 
+// Go through each product
 foreach ($products as $p) {
-    // Get the URL to the products page
-    $href = $p->find('.productInfo a')->getAttribute('href');
+    // Product object will hold all the product related information
+    $product = new Product();
+
+    // Need to set the parent dom to obtain product page URL
+    $product->setParentDom($p);
+
+    // Get the URL to the product page
+    $href = $product->getPageUrl();
 
     echo 'Get content for: ' . $href . PHP_EOL;
 
-    // Instantiate new DOM for product page.
-    $pp_dom = new Dom();
-
-    // Load and parse product page HTML
-    $product_page_curl = new \Curl;
-    $pp_dom->loadFromUrl($href, [], $product_page_curl);
-
-    // Instantiate new Product
-    $product = new Product;
-
-    // Find and assign title to the Product
-    $product->title = $pp_dom->find('.productSummary h1')->text();
-
-    // Assign page size to the Product
-    $product->size = $product_page_curl->getSize('kb');
-
-    // Find unit_price then, remove £ and any whitespace
-    // And assign it to the Product
-    $product->unit_price = preg_replace(
-        '/£|\s/', // Replace £ or any whitespace
-        '', // with nothing
-        $pp_dom->find('.productSummary p.pricePerUnit')->text()
-    );
-
-    // First we try extracting description from the div.productText next to
-    // the h3.productDataItemHeader (with text = "Description").
-    // If this fails (on some product pages) we get description
-    // from the div.longTextItems within
-    // div.itemTypeGroupContainer
-    $div_description = $pp_dom->find('.productDataItemHeader');
-    if (count($div_description) > 0) {
-        if ($div_description[0]->text() == 'Description') {
-            $product->description = $div_description
-                ->nextSibling() // blank
-                ->nextSibling() // div with the "description"
-                ->innerHtml();
-        }
-    } else { // For some products, description is in .longTextItems
-        $div_description = $pp_dom->find('.itemTypeGroupContainer .longTextItems');
-        if (count($div_description) > 0) {
-            $product->description = $div_description->innerHtml();
-        }
-    }
-
-    // Remove any whitespace and strip any HTML tags from the description field.
-    $product->description = trim(strip_tags($product->description));
+    // Load the product page by URL (also provide our extended Curl class)
+    $product->loadFromUrl($href, [], new \Curl);
 
     // Add this product to the ProductResponse
     $product_response->addProduct($product);
