@@ -1,4 +1,4 @@
 <?php
 // This is global bootstrap for autoloading
 
-Codeception\Util\Autoload::register('', '', dirname( dirname( __FILE__ ) ) . '/app/classes/' );
+Codeception\Util\Autoload::register('', '', __DIR__ . '/../app/classes/' );
