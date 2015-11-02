@@ -10,6 +10,7 @@ Requirements
 * PHP >= 5.4
 * composer
 * It requires `paquettg/php-html-parser` package
+* For testing, `codeception\codeception` package is required
 
 
 Install
@@ -20,7 +21,9 @@ Install
 Usage
 -----
 * On project root run `php script.php`
+* To run tests: `codecept run`
 
 Tests
 -----
+* Using Codeception framework.
 * All tests are under `tests` directory
