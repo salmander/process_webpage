@@ -18,11 +18,6 @@ class Product {
         $this->dom = $dom;
     }
 
-    // public function setDom(Dom $dom)
-    // {
-    //     $this->dom = $dom;
-    // }
-
     public function getDom()
     {
         return $this->dom;
