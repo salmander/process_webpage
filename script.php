@@ -15,7 +15,7 @@ $dom->loadFromUrl(URL, [], new \Curl);
 
 // In order to find all the urls to the product pages, we need to
 // find all the divs with the .product class
-$products = $dom->find('#productsContainer .product');
+$products = $dom->find('#productLister .product');
 
 echo "Total products: " . count($products) . PHP_EOL;
 $product_response = new ProductResponse();
